@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_nazwyplikow" default="compile.module.nazwyplikow">
+  <dirname property="module.nazwyplikow.basedir" file="${ant.file.module_nazwyplikow}"/>
+  
+  <property name="module.jdk.home.nazwyplikow" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.nazwyplikow" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.nazwyplikow" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.nazwyplikow" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="nazwyplikow.output.dir" value="${module.nazwyplikow.basedir}/out/production/NazwyPlikow"/>
+  <property name="nazwyplikow.testoutput.dir" value="${module.nazwyplikow.basedir}/out/test/NazwyPlikow"/>
+  
+  <path id="nazwyplikow.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="nazwyplikow.module.production.classpath">
+    <path refid="${module.jdk.classpath.nazwyplikow}"/>
+  </path>
+  
+  <path id="nazwyplikow.runtime.production.module.classpath">
+    <pathelement location="${nazwyplikow.output.dir}"/>
+  </path>
+  
+  <path id="nazwyplikow.module.classpath">
+    <path refid="${module.jdk.classpath.nazwyplikow}"/>
+    <pathelement location="${nazwyplikow.output.dir}"/>
+  </path>
+  
+  <path id="nazwyplikow.runtime.module.classpath">
+    <pathelement location="${nazwyplikow.testoutput.dir}"/>
+    <pathelement location="${nazwyplikow.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.nazwyplikow">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.nazwyplikow">
+    <patternset refid="excluded.from.module.nazwyplikow"/>
+  </patternset>
+  
+  <path id="nazwyplikow.module.sourcepath">
+    <dirset dir="${module.nazwyplikow.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.nazwyplikow" depends="compile.module.nazwyplikow.production,compile.module.nazwyplikow.tests" description="Compile module NazwyPlikow"/>
+  
+  <target name="compile.module.nazwyplikow.production" depends="register.custom.compilers" description="Compile module NazwyPlikow; production classes">
+    <mkdir dir="${nazwyplikow.output.dir}"/>
+    <javac2 destdir="${nazwyplikow.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.nazwyplikow}/javac">
+      <compilerarg line="${compiler.args.nazwyplikow}"/>
+      <bootclasspath refid="nazwyplikow.module.bootclasspath"/>
+      <classpath refid="nazwyplikow.module.production.classpath"/>
+      <src refid="nazwyplikow.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.nazwyplikow"/>
+    </javac2>
+    
+    <copy todir="${nazwyplikow.output.dir}">
+      <fileset dir="${module.nazwyplikow.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.nazwyplikow.tests" depends="register.custom.compilers,compile.module.nazwyplikow.production" description="compile module NazwyPlikow; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.nazwyplikow" description="cleanup module">
+    <delete dir="${nazwyplikow.output.dir}"/>
+    <delete dir="${nazwyplikow.testoutput.dir}"/>
+  </target>
+</project>

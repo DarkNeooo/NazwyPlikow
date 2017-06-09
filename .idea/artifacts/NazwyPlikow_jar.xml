@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="NazwyPlikow:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/NazwyPlikow_jar</output-path>
+    <root id="archive" name="NazwyPlikow.jar">
+      <element id="module-output" name="NazwyPlikow" />
+    </root>
+  </artifact>
+</component>
